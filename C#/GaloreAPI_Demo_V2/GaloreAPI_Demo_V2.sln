@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29721.120
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GaloreAPI_Demo_V2", "GaloreAPI_Demo_V2\GaloreAPI_Demo_V2.csproj", "{4F0DC92A-57AF-4C6E-9249-32E79A8185FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F0DC92A-57AF-4C6E-9249-32E79A8185FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0DC92A-57AF-4C6E-9249-32E79A8185FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0DC92A-57AF-4C6E-9249-32E79A8185FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0DC92A-57AF-4C6E-9249-32E79A8185FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D607FCE6-0B1D-4736-AA14-F640DC27DD5F}
+	EndGlobalSection
+EndGlobal
