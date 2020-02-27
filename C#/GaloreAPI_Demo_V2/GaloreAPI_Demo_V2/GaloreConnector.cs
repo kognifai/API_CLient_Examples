@@ -11,7 +11,8 @@ namespace GaloreAPIDemoV2
 {
     public class GaloreConnector
     {
-        private const string AUTHORIZATION = "Authorization";
+        private const string AUTHORIZATION_HEADER = "Authorization";
+        private const string APIMSUBKEY_HEADER = "Ocp-Apim-Subscription-Key";
         private readonly string AuthorityUrl;
         private readonly string ClientId;
         private readonly string ClientSecret;
@@ -21,6 +22,7 @@ namespace GaloreAPIDemoV2
         private readonly string UserId;
         private readonly string TenantId;
         private readonly string Resource;
+        private readonly string APIMSubscriptionKey;
 
         public GaloreConnector()
         {
@@ -33,6 +35,7 @@ namespace GaloreAPIDemoV2
             UserId = ConfigurationManager.AppSettings["UserId"];
             TenantId = ConfigurationManager.AppSettings["TenantId"];
             Resource = ConfigurationManager.AppSettings["Resource"];
+            APIMSubscriptionKey = ConfigurationManager.AppSettings["APIMSubscriptionKey"];
         }
 
         public async Task<HttpClient> GetClient()
@@ -78,7 +81,7 @@ namespace GaloreAPIDemoV2
                 if (tokenResponse != null && tokenResponse.IsError == false)
                 {
                     httpClient.DefaultRequestHeaders.Clear();
-                    httpClient.DefaultRequestHeaders.Add(AUTHORIZATION, $"Bearer {tokenResponse.AccessToken}");
+                    httpClient.DefaultRequestHeaders.Add(AUTHORIZATION_HEADER, $"Bearer {tokenResponse.AccessToken}");
                 }
                 else
                 {
@@ -106,11 +109,12 @@ namespace GaloreAPIDemoV2
                 IClientCredentialsManager clientCredentialsManager = new ClientCredentialsManager(options);
                 var token = await clientCredentialsManager.GetAccessTokenAsync(Resource);
 
-                if (httpClient.DefaultRequestHeaders.Contains(AUTHORIZATION))
+                if (httpClient.DefaultRequestHeaders.Contains(AUTHORIZATION_HEADER))
                 {
-                    httpClient.DefaultRequestHeaders.Remove(AUTHORIZATION);
+                    httpClient.DefaultRequestHeaders.Remove(AUTHORIZATION_HEADER);
                 }
-                httpClient.DefaultRequestHeaders.Add(AUTHORIZATION, $"Bearer {token}");
+                httpClient.DefaultRequestHeaders.Add(APIMSUBKEY_HEADER, APIMSubscriptionKey);
+                httpClient.DefaultRequestHeaders.Add(AUTHORIZATION_HEADER, $"Bearer {token}");
             }
             catch (Exception ex)
             {

@@ -14,7 +14,7 @@ namespace GaloreAPIDemoV2.Models
         public override string ToString()
         {
             var values = string.Join(", ", Values.Select(x => x.ToString()));
-            return $"Timestamp: {Timestamp} Values: {values}";
+            return $"Timestamp: {Timestamp} Value(s): {values}";
         }
     }
 }

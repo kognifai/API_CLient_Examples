@@ -37,7 +37,7 @@ namespace GaloreAPIDemoV2
                 }
 
                 Console.Write("\nFetching ship by ID...");
-                var shipEdge = fleet.Edges.Find(x => x.Name.ToLower() == "ship1");
+                var shipEdge = fleet.Edges.Find(x => x.Name.Equals("Ship_Apples", StringComparison.OrdinalIgnoreCase));
                 if (shipEdge == null)
                 {
                     Console.Write(" Failed.");
@@ -46,10 +46,24 @@ namespace GaloreAPIDemoV2
                 var ship = await client.GetAssetById(shipEdge.Node.Id, 1);
                 Console.Write(" Success!\n");
 
-                var tank = ship.Edges.Find(x => x.Name.ToLower() == "tank1");
-                var timeseriesNodes = await client.GetAssets(path: tank.Node.Path, nodeType: "TimeSeries");
-                Console.Write("Fetching latest data for timeseries nodes...");
-                var latestDataForNodes = await client.GetLatestTimeseriesForIds(timeseriesNodes.Select(x => x.Id).ToArray());
+                var engines = ship.Edges.Find(x => x.Name.Equals("Engines", StringComparison.OrdinalIgnoreCase));
+                if (engines == null)
+                {
+                    Console.WriteLine("Found no engines.. Are you sure this is not a row boat?");
+                    return;
+                }
+                var timeseriesNodes = await client.GetAssets(path: engines.Node.Path, nodeType: "TimeSeries");
+                Console.Write($"Fetching latest data for all timeseries nodes under path {engines.Node.Path}");
+                var timeseriesIds = timeseriesNodes
+                    .Select(x =>
+                    {
+                        // Bug workaround
+                        // Bug 105472: AssetModel API timeseries ID is empty if the node contains an empty streamLink attribute
+                        return string.IsNullOrEmpty(x.TimeseriesId)
+                            ? x.Id
+                            : x.TimeseriesId;
+                    }).ToArray();
+                var latestDataForNodes = await client.GetLatestTimeseriesForIds(timeseriesIds);
                 Console.Write(" Success!\n");
                 Console.WriteLine("\nLatest data for nodes:");
                 foreach (var (key, value) in latestDataForNodes)
@@ -64,12 +78,15 @@ namespace GaloreAPIDemoV2
                     }
                 }
 
-                var tsNode = timeseriesNodes.Find(x => x.Name.ToLower() == "random");
-                Console.WriteLine("\nFetching data from node 'Random'...");
+                var tsNode = timeseriesNodes.Find(x => x.Name.Equals("Total_Power", StringComparison.OrdinalIgnoreCase));
+                Console.WriteLine($"\nFetching data from last year for node {tsNode.Path}");
 
-                var from = new DateTime(2019, 12, 11);
-                var to = new DateTime(2020, 12, 11);
-                var data = await client.GetTimeseriesData(tsNode!.TimeseriesId, from, to);
+                var from = DateTime.Now.AddYears(-1);
+                var to = DateTime.Now;
+                var timeseriesId = string.IsNullOrEmpty(tsNode!.TimeseriesId)
+                    ? tsNode!.Id
+                    : tsNode!.TimeseriesId;
+                var data = await client.GetTimeseriesData(timeseriesId, from, to);
                 Console.WriteLine();
                 PrintData(data, 15);
             }
