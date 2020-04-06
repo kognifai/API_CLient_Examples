@@ -3,7 +3,8 @@ SOG Example
 
 In order to run the associated python code. 
 First a user needs to install the dependencies. These dependencies are listed in the requirements.txt file. Run the following command in the shell of the visual studio code. 
-	pip install -r requirements.txt
+
+*b pip install -r requirements.txt b*
 
 This project includes the following files. 
 
