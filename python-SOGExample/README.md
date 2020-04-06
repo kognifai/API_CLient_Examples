@@ -10,7 +10,7 @@ This project includes the following files.
 
 * Main.py: This is the entry point of the code. It has code for printing the final most recent timestamp received.
 * Viauth.py: This file authticates based on the tenant, client id and client secret. This file also has the common header for both the API
-User needs to update the all the variable marked <somevalue>
+User needs to update the all the variable marked *somevalue*
 * Getfilterednode.py: This code will the get the timeserieid based on the nodetype and standard nodepath. 
-User needs to update <shipname> in the nodePath variable.
+User needs to update *shipname* in the nodePath variable.
 * getlatestTS.py: This code will retrieve lastest speed over ground value based on timesereisid retrieved in getfilterednode.py. 
